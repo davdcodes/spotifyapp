@@ -19,7 +19,7 @@ sp_oauth = SpotifyOAuth(client_id = CLIENTID,
                         show_dialog = True
 )
 if "token_info" not in st.session_state:
-    token_indo = auth manager.get_cached_token()
+    token_info = auth_manager.get_cached_token()
     if not token_info:
         auth_url = auth_manager.get_authorize_url()
         st.write("Please log in to Spotify: ")
