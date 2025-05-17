@@ -18,17 +18,20 @@ sp_oauth = SpotifyOAuth(client_id = CLIENTID,
                         cache_handler = cache,
                         show_dialog = True
 )
-if "token_info" not in st.session_state:
-    token_info = sp_oauth.get_cached_token()
-    if not token_info:
-        auth_url = sp_oauth.get_authorize_url()
-        st.write("Please log in to Spotify: ")
-        st.markdown(f"[Login to Spotify]({auth_url})")
-    else:
-        st.session_state.token_info = token_info
+    
+# Step 2: Try to get token
+token_info = sp_oauth.get_cached_token()
 
-
-if "token_info" in st.session_state:
-    sp = spotipy.Spotify(sp_oauth = sp_oauth)
+if token_info:
+    # Step 3: Logged in
+    sp = spotipy.Spotify(auth_manager = sp_oauth)
     user = sp.current_user()
-    st.success(f"Loggin in as {user['display_name']}")
+    st.success(f" Logged in as {user['display_name']} ({user['email']})")
+    st.image(user['images'][0]['url'] if user['images'] else None, width=100)
+else:
+    # Step 4: Not logged in
+    auth_url = sp_oauth.get_authorize_url()
+    st.markdown(f"""
+        ###  Welcome!  
+        Please [log in to Spotify]({auth_url}) to continue.
+    """)
