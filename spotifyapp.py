@@ -52,4 +52,4 @@ else:
     if token_info:
         st.session_state['logged_in'] = True
         st.session_state['token_info'] = token_info
-        st.experimental_rerun()  # Refresh the page to proceed with the user's session
+         st.query_params()  # Refresh the page to proceed with the user's session
